@@ -2,7 +2,9 @@
 #include <stdlib.h>
 
 #define MENU_ITEM_AMOUNT 9
-
+#define MAX_STRING_TITLE_LENGTH 128
+#define MAX_STRING_DESCRIPTION_LENGTH 256
+#define MAX_STRING_DETAILS_LENGTH 128
 #define NEWLINE printf("\n");
 
 // ---- Menu and User Input ----
@@ -64,6 +66,8 @@ struct linkedList
 typedef struct linkedList linkedList;
 
 int validateIndexInput();
+
+char * validateStringInput(int maxLength);
 
 int addLinkedListItem(linkedList* l, char* s);
 
@@ -191,3 +195,18 @@ int validateIndexInput()
 	return input;
 }
 
+char * validateStringInput(int maxLength)
+{
+    char * input = (char *) malloc(maxLength);
+    printf("Input string (character limit: %d): ", maxLength);
+    fgets(input, maxLength + 1, stdin);
+    if(getchar() != '\n')
+    {
+        printf("war: input exceeds character limit. Your input will be shortened in order to fit.\n");
+        while(getchar() != '\n')
+        {
+
+        }
+    }
+    return input;
+}
