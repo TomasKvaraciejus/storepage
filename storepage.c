@@ -2,7 +2,9 @@
 #include <stdlib.h>
 
 #define MENU_ITEM_AMOUNT 9
-
+#define MAX_STRING_TITLE_LENGTH 128
+#define MAX_STRING_DESCRIPTION_LENGTH 256
+#define MAX_STRING_DETAILS_LENGTH 128
 #define NEWLINE printf("\n");
 
 // ---- Menu and User Input ----
@@ -37,7 +39,7 @@
 // 2 - Add or Replace Email Address
 // 3 - Add or Replace Custom Contact Link
 //
-// ---- Website Compilation ---- 
+// ---- Website Compilation ----
 // Website will be compiled with highest index (8)
 // On successful compilation program will exit
 
@@ -47,10 +49,10 @@
 // Details Menu
 // Seller's Contacts Menu
 //
-// Compile Website Function 
+// Compile Website Function
 
 int validateIndexInput();
-
+char * validateStringInput(int maxLength);
 int main()
 {
 	int menuIndex;
@@ -92,3 +94,19 @@ int validateIndexInput()
 
 	return input;
 }
+char * validateStringInput(int maxLength)
+{
+    char * input = (char *) malloc(maxLength);
+    printf("Input string (character limit: %d): ", maxLength);
+    fgets(input, maxLength + 1, stdin);
+    if(getchar() != '\n')
+    {
+        printf("war: input exceeds character limit. Your input will be shortened in order to fit.\n");
+        while(getchar() != '\n')
+        {
+
+        }
+    }
+    return input;
+}
+
