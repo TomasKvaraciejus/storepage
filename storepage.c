@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#define MENU_ITEM_AMOUNT 9
-#define MAX_STRING_TITLE_LENGTH 128
+
+#define MAIN_MENU_ITEM_AMOUNT 9
+#define USERCONTACTS_MENU_ITEM_AMOUNT 4
+#define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
-#define MAX_STRING_DETAILS_LENGTH 128
 #define NEWLINE printf("\n");
 
 // ---- Menu and User Input ----
@@ -67,37 +67,54 @@ typedef struct linkedList linkedList;
 
 int validateIndexInput();
 
-char * validateStringInput(int maxLength);
+int getStringLength(char* s);
+
+void initializeLinkedList(linkedList* l);
+
+char* validateStringInput(int maxLength);
 
 int addLinkedListItem(linkedList* l, char* s);
 
 int removeLinkedListItem(linkedList* l, int index);
 
-int insertLinkedListItem(linkedList* l, char *s, int index);
+int insertLinkedListItem(linkedList* l, char* s, int index);
 
 int main()
 {
 	int menuIndex;
-	char* mainMenuOptions[MENU_ITEM_AMOUNT] = {"Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit"};
-	char mainMenuFields[MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0}; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
+	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = { "Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit" };
+	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
 
-	linkedList mainMenuValues[MENU_ITEM_AMOUNT];
+	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {"Back", "Phone Number", "Email Address", "Custom Contact Link"};
+
+	linkedList mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
+	linkedList userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
+
+	for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
+	{
+		initializeLinkedList(&mainMenuValues[i]);
+	}
+
+	for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+	{
+		initializeLinkedList(&userContactsMenuValues[i]);
+	}
 
 	char end = 0;
 	while (!end)
 	{
 		printf("---- Main Menu ----\n\n");
-		for (int i = 0; i < MENU_ITEM_AMOUNT; i++)
+		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 		{
-			printf("%d - %s%c\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ?'*' : ' '));
+			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : mainMenuValues[i].s));
 		}
 		NEWLINE
 
-		menuIndex = validateIndexInput();
+		menuIndex = validateIndexInput(MAIN_MENU_ITEM_AMOUNT - 1);
 
 		if (menuIndex == 8)
 		{
-
+			++end;
 		}
 		else if (menuIndex == 6)
 		{
@@ -105,41 +122,77 @@ int main()
 		}
 		else if (menuIndex == 7)
 		{
+			char endMenu = 0;
 
+			while (!endMenu)
+			{
+				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+				{
+					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i].s);
+				}
+				NEWLINE
+
+				menuIndex = validateIndexInput(12);
+
+				if (menuIndex == 0)
+				{
+					++endMenu;
+				}
+				else
+				{
+					userContactsMenuValues[menuIndex].s = validateStringInput(MAX_STRING_LENGTH);
+					NEWLINE
+				}
+			}
 		}
 		else
 		{
 			printf("Enter New %s: ", mainMenuOptions[menuIndex]);
-			mainMenuValues[menuIndex].s = realloc(mainMenuValues[menuIndex].s, sizeof(char) * );
+			free(mainMenuValues[menuIndex].s);
+			mainMenuValues[menuIndex].s = validateStringInput(MAX_STRING_LENGTH);
 		}
-
-		++end;
 	}
+}
+
+void initializeLinkedList(linkedList* l)
+{
+	l->index = 0;
+	l->s = NULL;
+	l->nextListItem = NULL;
+	l->maxStringLength = MAX_STRING_LENGTH;
 }
 
 int addLinkedListItem(linkedList* l, char* s)
 {
 	int addValue = 0;
 
-	while (l->nextListItem == NULL)
+	while (l->nextListItem != NULL)
 	{
 		l = l->nextListItem;
 	}
 
-	linkedList *newListItem;
-	newListItem->s = s;
-	newListItem->nextListItem = NULL;
-	newListItem->maxStringLength = l->maxStringLength;
-	l->nextListItem = newListItem;
+	linkedList* newListItem = malloc(sizeof(linkedList));
+	if (newListItem != NULL)
+	{
+		newListItem->s = s;
+		newListItem->nextListItem = NULL;
+		newListItem->maxStringLength = l->maxStringLength;
+		newListItem->index = l->index + 1;
+		l->nextListItem = newListItem;
+	}
+	else
+	{
+		++addValue;
+	}
 
 	return addValue;
 }
 
-int removeLinkedListItem(linkedList *l, int index)
+int removeLinkedListItem(linkedList* l, int index)
 {
 	int removeValue = 0;
 
-	linkedList* prevListItem;
+	linkedList* prevListItem = l;
 
 	if (l->index > index)
 	{
@@ -147,74 +200,120 @@ int removeLinkedListItem(linkedList *l, int index)
 	}
 	else
 	{
-		while (l->index != index)
+		while (l->index != index && l != NULL)
 		{
-			if (l->nextListItem != NULL)
-			{
 				prevListItem = l;
 				l = l->nextListItem;
-			}
-			else
-			{
-				++removeValue;
-				break;
-			}
 		}
 
 		if (l->index == index)
 		{
 			prevListItem->nextListItem = l->nextListItem;
+			linkedList* _l = l->nextListItem;
+			while (_l != NULL)
+			{
+				--(_l->index);
+				_l = _l->nextListItem;
+			}
 			free(l);
+		}
+		else
+		{
+			++removeValue;
 		}
 	}
 
 	return removeValue;
 }
 
-int insertLinkedListItem(linkedList *l, char *s, int index)
+int insertLinkedListItem(linkedList* l, char* s, int index)
 {
+	int insertValue = 0;
 
+	if (l->index > index)
+	{
+		++insertValue;
+	}
+	else
+	{
+		while (l->index != index && l != NULL)
+		{
+			l = l->nextListItem;
+		}
+
+		if (l->index == index)
+		{
+			linkedList* newListItem = malloc(sizeof(linkedList));
+			newListItem->index = l->index + 1;
+			newListItem->maxStringLength = l->maxStringLength;
+			newListItem->s = s;
+			newListItem->nextListItem = l->nextListItem;
+			l->nextListItem = newListItem;
+
+			linkedList* _l = newListItem->nextListItem;
+			while (_l != NULL)
+			{
+				++(_l->index);
+				_l = _l->nextListItem;
+			}
+		}
+		else
+		{
+			++insertValue;
+		}
+	}
+
+	return insertValue;
 }
 
-int validateIndexInput()
+int validateIndexInput(int maxIndex)
 {
 	int input;
 	printf("Enter index: ");
-	while (!scanf("%d", &input) || !((input >= 0) && (input <= MENU_ITEM_AMOUNT - 1)))
+	while (!scanf("%d", &input) || !((input >= 0) && (input <= maxIndex)))
 	{
 		char peekChar = getc(stdin);
 		while (peekChar != '\n' && peekChar != ' ')
 		{
 			peekChar = getc(stdin);
 		}
-		putc(peekChar, stdin);
 		printf("err: incorrect input\nEnter index: ");
 	}
 	NEWLINE
 
+		return input;
+}
+
+int getStringLength(char* s)
+{
+	int i = 0;
+	while (s[i] != '\0')
+	{
+		++i;
+	}
+
+	return i;
+}
+
+char* validateStringInput(int maxLength)
+{
+	char* input = (char*)malloc(maxLength);
+	printf("Input string (character limit: %d): ", maxLength);
+	scanf("%s", input);
+	if (getStringLength(input) < maxLength)
+	{
+		input[getStringLength(input) - 1] = '\0';
+	}
+	else
+	{
+		if (getchar() != '\n')
+		{
+			printf("war: input exceeds character limit. Your input will be shortened in order to fit.\n");
+			while (getchar() != '\n')
+			{
+
+			}
+		}
+	}
 	return input;
 }
-
-char * validateStringInput(int maxLength)
-{
-    char * input = (char *) malloc(maxLength);
-    printf("Input string (character limit: %d): ", maxLength);
-    fgets(input, maxLength + 1, stdin);
-    if(strlen(input) < maxLength)
-    {
-        input[strlen(input) - 1] = '\0';
-    }
-    else
-    {
-        if(getchar() != '\n')
-        {
-            printf("war: input exceeds character limit. Your input will be shortened in order to fit.\n");
-            while(getchar() != '\n')
-            {
-
-            }
-        }
-    }
-    return input;
-}
-
