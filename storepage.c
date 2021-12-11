@@ -446,7 +446,6 @@ int addLinkedListItemToTop(linkedList **l, char * s)
     *l = newElement;
     while(newElement->nextListItem != NULL)
     {
-        printf("A");
         if(newElement->nextListItem != NULL);
         {
                 newElement = newElement->nextListItem;
