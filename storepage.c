@@ -126,6 +126,7 @@ int main()
 
 			while (!endMenu)
 			{
+				printf("---- Details Menu ----\n");
 				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 				{
 					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i]->s);
