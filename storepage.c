@@ -123,20 +123,19 @@ int main()
 
 		if (menuIndex == 8)
 		{
-			int index = 0;
             		for(int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
             		{
                 		if(mainMenuFields[index] == 1)
                 		{
-                    			printf("You have not filled in all the necessary fields. Thus, you are unable to compile the file.\n");
+                    			printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
                     			NEWLINE
                     			break;
                 		}
-            		}
-            		if(index == MAIN_MENU_ITEM_AMOUNT - 1)
-            		{
-                		compileWebsite(mainMenuValues, userContactsMenuValues);
-                		++end;
+                		else if(index == MAIN_MENU_ITEM_AMOUNT - 1)
+                		{
+                    			compileWebsite(mainMenuValues, userContactsMenuValues);
+                    			++end;
+                		}
             		}
 		}
 		else if (menuIndex == 6)
