@@ -252,7 +252,18 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s); // Item Name
 		fprintf(outputFile, "<table>\n");
 		TR
-		fprintf(outputFile, "<td rowspan="4">\n");
+		fprintf(outputFile, "<td rowspan=\"4\">\n");
+		fprintf(outputFile, "<img src = \" %s \" width = \"250\"/>\n", mainMenuValues[1]->s); // Image Source
+		TD_END
+		TD
+		fprintf(outputFile, "<strong>Price:</strong> %s\n", mainMenuValues[2]->s);
+		TD_END	
+		TR_END
+		TR
+		TD
+		fprintf(outputFile, "<strong>Shiping cost:</strong> %s\n", mainMenuValues[3]->s);
+		TD_END
+		TR_END
 	}
 	else
 	{
