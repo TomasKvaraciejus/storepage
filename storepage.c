@@ -23,7 +23,7 @@
 // 4 - Description
 // 5 - More Information (Link)
 // 6 - Details
-// 7 - Seller's Contacts* (?)
+// 7 - Seller's Contacts (?)
 // 8 - Compile Website Function
 //
 // * - mandatory (User will be prompted to enter details when attempting to compile website without sufficient data)
@@ -55,7 +55,7 @@
 //
 
 // ---- TODO: ----
-// Compile Website Function
+// 
 
 struct linkedList
 {
@@ -92,7 +92,7 @@ int main()
 {
 	int menuIndex;
 	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = { "Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit" };
-	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
+	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 0, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
 
 	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = { "Back", "Phone Number", "Email Address", "Custom Contact Link" };
 
@@ -123,20 +123,27 @@ int main()
 
 		if (menuIndex == 8)
 		{
-            		for(int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
-            		{
-                		if(mainMenuFields[index] == 1)
-                		{
-                    			printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
-                    			NEWLINE
-                    			break;
-                		}
-                		else if(index == MAIN_MENU_ITEM_AMOUNT - 1)
-                		{
-                    			compileWebsite(mainMenuValues, userContactsMenuValues);
-                    			++end;
-                		}
-            		}
+			for (int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
+			{
+				if (mainMenuFields[index] == 1)
+				{
+					printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
+					NEWLINE
+						break;
+				}
+				else if (index == MAIN_MENU_ITEM_AMOUNT - 1)
+				{
+					for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
+					{
+						if (mainMenuValues[i]->s == NULL)
+						{
+							mainMenuValues[i]->s = "Not provided";
+						}
+					}
+					compileWebsite(mainMenuValues, userContactsMenuValues);
+					++end;
+				}
+			}
 		}
 		else if (menuIndex == 6)
 		{
@@ -283,10 +290,10 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 			fprintf(outputFile, "<p>\n");
 		fprintf(outputFile, "<strong>Description:</strong>\n");
 		BR
-		fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
+			fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
 		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
 		BR
-		fprintf(outputFile, "</p>\n");
+			fprintf(outputFile, "</p>\n");
 		TD_END
 			TR_END
 			TR
@@ -548,5 +555,6 @@ int addLinkedListItemToTop(linkedList** l, char* s)
 		}
 		newElement->index++;
 	}
+	free(newElement);
 	return 0;
 }
