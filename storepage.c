@@ -548,6 +548,5 @@ int addLinkedListItemToTop(linkedList** l, char* s)
 		}
 		newElement->index++;
 	}
-	free(newElement);
 	return 0;
 }
