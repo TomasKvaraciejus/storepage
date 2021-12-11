@@ -1,3 +1,15 @@
+/* table,
+tr,
+td {
+  border: #444 2px solid;
+} */
+
+.cont {
+  margin: 0 0 0 5px;
+  padding: 0;
+  list-style: none;
+}
+
 h1 {
   text-align: center;
 }
