@@ -129,21 +129,21 @@ int main()
             int index = 0;
             int userInput;
             char* detailMenuOptions[5] = { "Return to Main Menu", "Add New List Item to Top", "Insert New List Item to Custom Index", "Modify List Item", "Remove List Item" };
-            printf("---- Current details ---- \n");
-            NEWLINE
-            if (mainMenuValues[menuIndex]->nextListItem == NULL)
-            {
-                printf("No current details.\n");
-            }
-            else
-            {
-                index = printLinkedList(mainMenuValues[menuIndex]);
-            }
-            NEWLINE
-            printf("---- End of details ---- \n");
-            NEWLINE
             while (a)
             {
+                printf("---- Current details ---- \n");
+                NEWLINE
+                if (mainMenuValues[menuIndex]->nextListItem == NULL)
+                {
+                    printf("No current details.\n");
+                }
+                else
+                {
+                    index = printLinkedList(mainMenuValues[menuIndex]);
+                }
+                NEWLINE
+                printf("---- End of details ---- \n");
+                NEWLINE
                 linkedList* first = mainMenuValues[menuIndex];
                 printf("---- Options menu ---- \n");
                 if (!index)
@@ -186,11 +186,6 @@ int main()
                 }
                 case 4:
                 {
-                    printf("---- Current details ---- \n");
-                    NEWLINE
-                    index = printLinkedList(mainMenuValues[menuIndex]);
-                    NEWLINE
-                    printf("---- End of details ---- \n");
                     removeLinkedListItem(mainMenuValues[menuIndex], validateIndexInput(index));
                     index--;
                     break;
@@ -446,9 +441,10 @@ int addLinkedListItemToTop(linkedList **l, char * s)
     *l = newElement;
     while(newElement->nextListItem != NULL)
     {
+        printf("A");
         if(newElement->nextListItem != NULL);
         {
-                newElement = newElement->nextListItem;
+            newElement = newElement->nextListItem;
         }
         newElement->index++;
     }
