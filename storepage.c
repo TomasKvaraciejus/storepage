@@ -69,7 +69,7 @@ int validateIndexInput();
 
 int getStringLength(char* s);
 
-void initializeLinkedList(linkedList* l);
+linkedList* initializeLinkedList();
 
 char* validateStringInput(int maxLength);
 
@@ -87,17 +87,17 @@ int main()
 
 	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {"Back", "Phone Number", "Email Address", "Custom Contact Link"};
 
-	linkedList mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
-	linkedList userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
+	linkedList *mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
+	linkedList *userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
 
 	for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 	{
-		initializeLinkedList(&mainMenuValues[i]);
+		mainMenuValues[i] = initializeLinkedList();
 	}
 
 	for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 	{
-		initializeLinkedList(&userContactsMenuValues[i]);
+		userContactsMenuValues[i] = initializeLinkedList();
 	}
 
 	char end = 0;
@@ -106,7 +106,7 @@ int main()
 		printf("---- Main Menu ----\n\n");
 		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 		{
-			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : mainMenuValues[i].s));
+			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : mainMenuValues[i]->s));
 		}
 		NEWLINE
 
@@ -128,7 +128,7 @@ int main()
 			{
 				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 				{
-					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i].s);
+					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i]->s);
 				}
 				NEWLINE
 
@@ -140,7 +140,7 @@ int main()
 				}
 				else
 				{
-					userContactsMenuValues[menuIndex].s = validateStringInput(MAX_STRING_LENGTH);
+					userContactsMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 					NEWLINE
 				}
 			}
@@ -148,18 +148,20 @@ int main()
 		else
 		{
 			printf("Enter New %s: ", mainMenuOptions[menuIndex]);
-			free(mainMenuValues[menuIndex].s);
-			mainMenuValues[menuIndex].s = validateStringInput(MAX_STRING_LENGTH);
+			free(mainMenuValues[menuIndex]->s);
+			mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 		}
 	}
 }
 
-void initializeLinkedList(linkedList* l)
+linkedList* initializeLinkedList()
 {
+	linkedList* l = malloc(sizeof(linkedList));
 	l->index = 0;
 	l->s = NULL;
 	l->nextListItem = NULL;
 	l->maxStringLength = MAX_STRING_LENGTH;
+	return l;
 }
 
 int addLinkedListItem(linkedList* l, char* s)
@@ -192,9 +194,9 @@ int removeLinkedListItem(linkedList* l, int index)
 {
 	int removeValue = 0;
 
-	linkedList* prevListItem = l;
+	linkedList* prevListItem = l, *_l, *_originalListItem = l;
 
-	if (l->index > index)
+	if (l->index >= index)
 	{
 		++removeValue;
 	}
@@ -209,13 +211,24 @@ int removeLinkedListItem(linkedList* l, int index)
 		if (l->index == index)
 		{
 			prevListItem->nextListItem = l->nextListItem;
-			linkedList* _l = l->nextListItem;
+			_l = l->nextListItem;
 			while (_l != NULL)
 			{
 				--(_l->index);
 				_l = _l->nextListItem;
 			}
-			free(l);
+
+			if (index == 0)
+			{
+				_l = l->nextListItem;
+				free(l);
+				l = _l;
+				printf("buh\n");
+			}
+			else
+			{
+				free(l);
+			}
 		}
 		else
 		{
