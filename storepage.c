@@ -79,9 +79,9 @@ int removeLinkedListItem(linkedList* l, int index);
 
 int insertLinkedListItem(linkedList* l, char* s, int index);
 
-int editLinkedListItem(linkedList *l, char *s, int index);
+int editLinkedListItem(linkedList* l, char* s, int index);
 
-int printLinkedList(linkedList * list);
+int printLinkedList(linkedList* list);
 
 int main()
 {
@@ -89,10 +89,10 @@ int main()
 	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = { "Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit" };
 	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
 
-	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {"Back", "Phone Number", "Email Address", "Custom Contact Link"};
+	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = { "Back", "Phone Number", "Email Address", "Custom Contact Link" };
 
-	linkedList *mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
-	linkedList *userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
+	linkedList* mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
+	linkedList* userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
 
 	for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 	{
@@ -114,7 +114,7 @@ int main()
 		}
 		NEWLINE
 
-		menuIndex = validateIndexInput(MAIN_MENU_ITEM_AMOUNT - 1);
+			menuIndex = validateIndexInput(MAIN_MENU_ITEM_AMOUNT - 1);
 
 		if (menuIndex == 8)
 		{
@@ -122,94 +122,94 @@ int main()
 		}
 		else if (menuIndex == 6)
 		{
-                char a = 1;
-    int availableOptions = 5;
-    int index = 0;
-    int userInput;
-    char * detailMenuOptions[5] = {"Return to Main Menu", "Add New List Item to Top", "Insert New List Item to Custom Index", "Modify List Item", "Remove List Item"};
-    printf("---- Current details ---- \n");
-    NEWLINE
-    if(mainMenuValues[menuIndex]->nextListItem == NULL)
-    {
-        printf("No current details.\n");
-    }
-    else
-    {
-        index = printLinkedList(mainMenuValues[menuIndex]);
-    }
-    NEWLINE
-    printf("---- End of details ---- \n");
-    NEWLINE
-    while(a)
-    {
-        linkedList * first = mainMenuValues[menuIndex];
-        printf("---- Options menu ---- \n");
-        if(!index)
-        {
-            availableOptions = 2;
-        }
-        else
-        {
-            availableOptions = 5;
-        }
-        for(int i = 0; i < availableOptions; ++i)
-        {
-            printf("%d - %s\n", i, detailMenuOptions[i]);
-        }
-        printf("What do you want to do?\n");
-        userInput = validateIndexInput(availableOptions);
-        switch(userInput)
-        {
-        case 0:
-        {
-            a = 0;
-            break;
-        }
-        case 1:
-        {
-            if(index == 0)
-            {
-                mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
-            }
-            else
-            {
-                addLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH));
-            }
-            index++;
-            break;
-        }
-        case 2:
-        {
-            insertLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH), validateIndexInput(index));
-            index++;
-            break;
-        }
-        case 3:
-        {
-            editLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH), validateIndexInput(index));
-            break;
-        }
-        case 4:
-        {
-            printf("---- Current details ---- \n");
-            NEWLINE
-            index = printLinkedList(mainMenuValues[menuIndex]);
-            NEWLINE
-            printf("---- End of details ---- \n");
-            removeLinkedListItem(mainMenuValues[menuIndex], validateIndexInput(index));
-            index--;
-            break;
-        }
-        }
+			char a = 1;
+			int availableOptions = 5;
+			int index = 0;
+			int userInput;
+			char* detailMenuOptions[5] = { "Return to Main Menu", "Add New List Item to Top", "Insert New List Item to Custom Index", "Modify List Item", "Remove List Item" };
+			printf("---- Current details ---- \n");
+			NEWLINE
+				if (mainMenuValues[menuIndex]->nextListItem == NULL)
+				{
+					printf("No current details.\n");
+				}
+				else
+				{
+					index = printLinkedList(mainMenuValues[menuIndex]);
+				}
+			NEWLINE
+				printf("---- End of details ---- \n");
+			NEWLINE
+				while (a)
+				{
+					linkedList* first = mainMenuValues[menuIndex];
+					printf("---- Options menu ---- \n");
+					if (!index)
+					{
+						availableOptions = 2;
+					}
+					else
+					{
+						availableOptions = 5;
+					}
+					for (int i = 0; i < availableOptions; ++i)
+					{
+						printf("%d - %s\n", i, detailMenuOptions[i]);
+					}
+					printf("What do you want to do?\n");
+					userInput = validateIndexInput(availableOptions);
+					switch (userInput)
+					{
+					case 0:
+					{
+						a = 0;
+						break;
+					}
+					case 1:
+					{
+						if (index == 0)
+						{
+							mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
+						}
+						else
+						{
+							addLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH));
+						}
+						index++;
+						break;
+					}
+					case 2:
+					{
+						insertLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH), validateIndexInput(index));
+						index++;
+						break;
+					}
+					case 3:
+					{
+						editLinkedListItem(mainMenuValues[menuIndex], validateStringInput(MAX_STRING_LENGTH), validateIndexInput(index));
+						break;
+					}
+					case 4:
+					{
+						printf("---- Current details ---- \n");
+						NEWLINE
+							index = printLinkedList(mainMenuValues[menuIndex]);
+						NEWLINE
+							printf("---- End of details ---- \n");
+						removeLinkedListItem(mainMenuValues[menuIndex], validateIndexInput(index));
+						index--;
+						break;
+					}
+					}
+				}
 		}
-    }
 		else if (menuIndex == 7)
 		{
 			char endMenu = 0;
 
 			while (!endMenu)
 			{
-				printf("---- Details Menu ----\n");
+				printf("---- User Contacts Menu ----\n");
 				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 				{
 					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i]->s);
@@ -225,6 +225,7 @@ int main()
 				else
 				{
 					userContactsMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
+					mainMenuFields[7] = 2;
 					NEWLINE
 				}
 			}
@@ -234,6 +235,7 @@ int main()
 			printf("Enter New %s: ", mainMenuOptions[menuIndex]);
 			free(mainMenuValues[menuIndex]->s);
 			mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
+			mainMenuFields[menuIndex] = 2;
 		}
 	}
 }
@@ -278,7 +280,7 @@ int removeLinkedListItem(linkedList* l, int index)
 {
 	int removeValue = 0;
 
-	linkedList* prevListItem = l, *_l, *_originalListItem = l;
+	linkedList* prevListItem = l, * _l, * _originalListItem = l;
 
 	if (l->index >= index)
 	{
@@ -288,8 +290,8 @@ int removeLinkedListItem(linkedList* l, int index)
 	{
 		while (l->index != index && l != NULL)
 		{
-				prevListItem = l;
-				l = l->nextListItem;
+			prevListItem = l;
+			l = l->nextListItem;
 		}
 
 		if (l->index == index)
@@ -397,7 +399,7 @@ char* validateStringInput(int maxLength)
 	char* input = (char*)malloc(maxLength);
 	printf("Input string (character limit: %d): ", maxLength);
 	getchar();
-    fgets(input, maxLength + 1, stdin);
+	fgets(input, maxLength + 1, stdin);
 	if (getStringLength(input) < maxLength)
 	{
 		input[getStringLength(input) - 1] = '\0';
@@ -415,27 +417,26 @@ char* validateStringInput(int maxLength)
 	}
 	return input;
 }
-int editLinkedListItem(linkedList *l, char *s, int index)
+int editLinkedListItem(linkedList* l, char* s, int index)
 {
-    while(l->index != index)
-    {
-        l = l->nextListItem;
-    }
-    l->s = s;
-    return 0;
+	while (l->index != index)
+	{
+		l = l->nextListItem;
+	}
+	l->s = s;
+	return 0;
 }
-int printLinkedList(linkedList * list)
+int printLinkedList(linkedList* list)
 {
-    int index = 0;
-    do
-    {
-        printf("%d - %s\n", list->index, list->s);
-        if(list->nextListItem != NULL)
-        {
-            list = list->nextListItem;
-        }
-        index++;
-    }
-    while(list->nextListItem != NULL);
-    return index;
+	int index = 0;
+	do
+	{
+		printf("%d - %s\n", list->index, list->s);
+		if (list->nextListItem != NULL)
+		{
+			list = list->nextListItem;
+		}
+		index++;
+	} while (list->nextListItem != NULL);
+	return index;
 }
