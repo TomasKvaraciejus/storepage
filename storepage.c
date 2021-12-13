@@ -7,7 +7,7 @@
 #define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
 #define NEWLINE printf("\n");
-#define NULL_STRING "Not provided"
+#define NULL_STRING "Not provided."
 
 #define TD fprintf(outputFile, "<td>\n");
 #define TD_END fprintf(outputFile, "</td>\n");
@@ -19,13 +19,12 @@
 // User input will be read through options menu accessed by index "menuIndex"
 // 0 - Item Name*
 // 1 - Image Source
-//		(If image is not found or format is incorrect user will be notified but not prompted to enter new source; In case of no available source image will be replaced with "No image provided")
 // 2 - Item Price*
-// 3 - Shipping Cost (+ Seller's Location (?))
+// 3 - Shipping Cost
 // 4 - Description
 // 5 - More Information (Link)
 // 6 - Details
-// 7 - Seller's Contacts* (?)
+// 7 - Seller's Contacts*
 // 8 - Compile Website Function
 //
 // * - mandatory (User will be prompted to enter details when attempting to compile website without sufficient data)
@@ -286,7 +285,10 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<strong>Description:</strong>\n");
 		BR
 			fprintf(outputFile, "%s\n", mainMenuValues[4]->s  == NULL ? (NULL_STRING) : mainMenuValues[4]->s); // Description
-		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s == NULL ? (NULL_STRING) : mainMenuValues[5]->s); // More Information (Link)
+		if(mainMenuValues[5]->s != NULL)
+        {
+            fprintf(outputFile, "<a href=\"%s\"> More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
+        }
 		BR
 			fprintf(outputFile, "</p>\n");
 		TD_END
@@ -515,7 +517,7 @@ int getStringLength(char* s)
 	return i;
 }
 
-char* validateStringInput(int maxLength)
+char* validateStringInput(int maxLength) //checks if a string is not too long
 {
 	char* input = (char*)malloc(maxLength);
 	printf("Input string (character limit: %d): ", maxLength);
@@ -537,7 +539,7 @@ char* validateStringInput(int maxLength)
 	}
 	return input;
 }
-int editLinkedListItem(linkedList* l, char* s, int index)
+int editLinkedListItem(linkedList* l, char* s, int index)//edits the linked list item with the index provided
 {
 	while (l->index != index)
 	{
@@ -546,7 +548,7 @@ int editLinkedListItem(linkedList* l, char* s, int index)
 	l->s = s;
 	return 0;
 }
-int printLinkedList(linkedList* list)
+int printLinkedList(linkedList* list) //prints linked list
 {
 	int index = 0;
 	do
@@ -560,7 +562,7 @@ int printLinkedList(linkedList* list)
 	} while (list->nextListItem != NULL);
 	return index;
 }
-int addLinkedListItemToTop(linkedList** l, char* s)
+int addLinkedListItemToTop(linkedList** l, char* s) //Adds a new element to the head of the linked list
 {
 	linkedList* newElement = (linkedList*)malloc(sizeof(linkedList));
 	newElement->s = s;
