@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAIN_MENU_ITEM_AMOUNT 9
 #define USERCONTACTS_MENU_ITEM_AMOUNT 4
@@ -56,7 +57,7 @@
 //
 
 // ---- TODO: ----
-// 
+//
 
 struct linkedList
 {
@@ -116,7 +117,7 @@ int main()
 		printf("---- Main Menu ----\n\n");
 		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 		{
-			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : (mainMenuValues[i]->s == NULL ? (NULL_STRING) : mainMenuValues[i]->s)));
+			printf("%d - %-24s %c %c%s\n", i, mainMenuOptions[i], (i == 8) ? 0 : '-' ,((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : ((i == 8) ? (" ") : (mainMenuValues[i]->s == NULL) ? (NULL_STRING) : mainMenuValues[i]->s)));
 		}
 		NEWLINE
 
@@ -145,7 +146,7 @@ int main()
 			int availableOptions = 5;
 			int index = 0;
 			int userInput;
-			char* detailMenuOptions[5] = { "Return to Main Menu", "Add New List Item to Top", "Insert New List Item to Custom Index", "Modify List Item", "Remove List Item" };
+			char* detailMenuOptions[5] = { "Return to Main Menu", "Add New List Item to Top", "Insert New List Item after Custom Index", "Modify List Item", "Remove List Item" };
 			while (a)
 			{
 				printf("---- Current details ---- \n");
@@ -219,7 +220,7 @@ int main()
 				printf("---- User Contacts Menu ----\n");
 				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 				{
-					printf("%d - %-24s - %s\n", i, userContactsMenuOptions[i], userContactsMenuValues[i]->s);
+					printf("%d - %-24s %c %s\n", i, userContactsMenuOptions[i], (!i) ? (0) : ('-'), (!i) ? (" ") : (userContactsMenuValues[i]->s));
 				}
 				NEWLINE
 
@@ -262,19 +263,19 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 
 		fprintf(outputFile, "<h1> World's Best Store - <span class=\"demo rainbow\">IrmaList</span> </h1>\n");
 		fprintf(outputFile, "<article>\n");
-		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s); // Item Name
+		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s == NULL ? (NULL_STRING) : mainMenuValues[0]->s); // Item Name
 		fprintf(outputFile, "<table>\n");
 		TR
 			fprintf(outputFile, "<td rowspan=\"4\">\n");
-		fprintf(outputFile, "<img src = \" %s \" width = \"250\"/>\n", mainMenuValues[1]->s); // Image Source
+		fprintf(outputFile, "<img src = \" %s \" width = \"250\"/>\n", mainMenuValues[1]->s == NULL ? (NULL_STRING) : mainMenuValues[1]->s); // Image Source
 		TD_END
 			TD
-			fprintf(outputFile, "<strong>Price:</strong> %s\n", mainMenuValues[2]->s);
+			fprintf(outputFile, "<strong>Price:</strong> %s\n", mainMenuValues[2]->s == NULL ? (NULL_STRING) : mainMenuValues[2]->s);
 		TD_END
 			TR_END
 			TR
 			TD
-			fprintf(outputFile, "<strong>Shiping cost:</strong> %s\n", mainMenuValues[3]->s); // Shipping Cost
+			fprintf(outputFile, "<strong>Shiping cost:</strong> %s\n", mainMenuValues[3]->s == NULL ? (NULL_STRING) : mainMenuValues[3]->s); // Shipping Cost
 		TD_END
 			TR_END
 			TD
@@ -284,8 +285,8 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 			fprintf(outputFile, "<p>\n");
 		fprintf(outputFile, "<strong>Description:</strong>\n");
 		BR
-			fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
-		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
+			fprintf(outputFile, "%s\n", mainMenuValues[4]->s  == NULL ? (NULL_STRING) : mainMenuValues[4]->s); // Description
+		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s == NULL ? (NULL_STRING) : mainMenuValues[5]->s); // More Information (Link)
 		BR
 			fprintf(outputFile, "</p>\n");
 		TD_END
@@ -296,7 +297,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<ul>\n");
 		do
 		{
-			fprintf(outputFile, "<li> %s </li>\n", mainMenuValues[6]->s); // Product Details
+			fprintf(outputFile, "<li> %s </li>\n", mainMenuValues[6]->s == NULL ? (NULL_STRING) : mainMenuValues[6]->s); // Product Details
 			if (mainMenuValues[6]->nextListItem)
 			{
 				mainMenuValues[6] = mainMenuValues[6]->nextListItem;
@@ -387,11 +388,13 @@ int removeLinkedListItem(linkedList** l, int index)
 {
 	int removeValue = 0;
 
-	linkedList* prevListItem = (*l), * _l, * _originalListItem = (*l);
+	linkedList * prevListItem = *l;
+	linkedList * _l;
+	linkedList *  _originalListItem = *l;
 	if (!index)
 	{
-		*l = (*l)->nextListItem;
-		prevListItem = *l;
+		(*l) = (*l)->nextListItem;
+		prevListItem = (*l);
 		free(_originalListItem);
 		while (prevListItem->nextListItem)
 		{
