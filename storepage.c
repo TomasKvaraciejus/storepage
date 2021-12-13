@@ -312,8 +312,8 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "</article>\n");
 		fprintf(outputFile, "</table>\n");
 		fprintf(outputFile, "<article>\n");
+		fprintf(outputFile, "<strong>Contact info:</strong>\n");
 		fprintf(outputFile, "<ul class=\"cont\">\n");
-		fprintf(outputFile, "<li><strong>Contact info:</strong></li>\n");
 		char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = { "Phone Number", "Email", "Other" };
 		for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 		{
