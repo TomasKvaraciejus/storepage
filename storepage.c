@@ -6,6 +6,7 @@
 #define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
 #define NEWLINE printf("\n");
+#define NULL_STRING "Not provided"
 
 #define TD fprintf(outputFile, "<td>\n");
 #define TD_END fprintf(outputFile, "</td>\n");
@@ -55,7 +56,7 @@
 //
 
 // ---- TODO: ----
-// Compile Website Function
+// 
 
 struct linkedList
 {
@@ -123,20 +124,20 @@ int main()
 
 		if (menuIndex == 8)
 		{
-            		for(int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
-            		{
-                		if(mainMenuFields[index] == 1)
-                		{
-                    			printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
-                    			NEWLINE
-                    			break;
-                		}
-                		else if(index == MAIN_MENU_ITEM_AMOUNT - 1)
-                		{
-                    			compileWebsite(mainMenuValues, userContactsMenuValues);
-                    			++end;
-                		}
-            		}
+			for (int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
+			{
+				if (mainMenuFields[index] == 1)
+				{
+					printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
+					NEWLINE
+						break;
+				}
+				else if (index == MAIN_MENU_ITEM_AMOUNT - 1)
+				{
+					compileWebsite(mainMenuValues, userContactsMenuValues);
+					++end;
+				}
+			}
 		}
 		else if (menuIndex == 6)
 		{
@@ -242,6 +243,7 @@ int main()
 			free(mainMenuValues[menuIndex]->s);
 			mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 			mainMenuFields[menuIndex] = 2;
+			NEWLINE
 		}
 	}
 }
@@ -283,10 +285,10 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 			fprintf(outputFile, "<p>\n");
 		fprintf(outputFile, "<strong>Description:</strong>\n");
 		BR
-		fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
+			fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
 		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
 		BR
-		fprintf(outputFile, "</p>\n");
+			fprintf(outputFile, "</p>\n");
 		TD_END
 			TR_END
 			TR
@@ -308,19 +310,19 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "</article>\n");
 		fprintf(outputFile, "</table>\n");
 		fprintf(outputFile, "<article>\n");
-        fprintf(outputFile,"<ul class=\"cont\">\n");
-        fprintf(outputFile,"<li><strong>Contact info:</strong></li>\n");
-        char * meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = {"Phone Number", "Email", "Other"};
-            for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
-				{
-				    if(userContactsMenuValues[i]->s != NULL)
-                    {
-                        fprintf(outputFile, "<li>%s: %s</li>\n",meansOfContact[i-1], userContactsMenuValues[i]->s);
-                    }
-				}
-        fprintf(outputFile, "</ul>\n");
-        fprintf(outputFile, "<p></\n");
-        fprintf(outputFile, "</article>\n");
+		fprintf(outputFile, "<ul class=\"cont\">\n");
+		fprintf(outputFile, "<li><strong>Contact info:</strong></li>\n");
+		char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = { "Phone Number", "Email", "Other" };
+		for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+		{
+			if (userContactsMenuValues[i]->s != NULL)
+			{
+				fprintf(outputFile, "<li>%s: %s</li>\n", meansOfContact[i - 1], userContactsMenuValues[i]->s);
+			}
+		}
+		fprintf(outputFile, "</ul>\n");
+		fprintf(outputFile, "<p></\n");
+		fprintf(outputFile, "</article>\n");
 
 		for (int i = 0; i < 5; ++i)
 		{
@@ -350,7 +352,7 @@ linkedList* initializeLinkedList()
 {
 	linkedList* l = malloc(sizeof(linkedList));
 	l->index = 0;
-	l->s = NULL;
+	l->s = NULL_STRING;
 	l->nextListItem = NULL;
 	l->maxStringLength = MAX_STRING_LENGTH;
 	return l;
@@ -387,18 +389,18 @@ int removeLinkedListItem(linkedList** l, int index)
 	int removeValue = 0;
 
 	linkedList* prevListItem = (*l), * _l, * _originalListItem = (*l);
-    if(!index)
-    {
-        *l = (*l)->nextListItem;
-        prevListItem = *l;
-        free(_originalListItem);
-        while(prevListItem->nextListItem)
-        {
-            prevListItem->index--;
-            prevListItem = prevListItem->nextListItem;
-        }
-        return 0;
-    }
+	if (!index)
+	{
+		*l = (*l)->nextListItem;
+		prevListItem = *l;
+		free(_originalListItem);
+		while (prevListItem->nextListItem)
+		{
+			prevListItem->index--;
+			prevListItem = prevListItem->nextListItem;
+		}
+		return 0;
+	}
 	if ((*l)->index >= index)
 	{
 		++removeValue;
@@ -488,7 +490,7 @@ int validateIndexInput(int maxIndex)
 	while (!scanf("%d", &input) || !((input >= 0) && (input <= maxIndex)))
 	{
 		char peekChar = getc(stdin);
-		while (peekChar != '\n' && peekChar != ' ')
+		while (peekChar != '\n')
 		{
 			peekChar = getc(stdin);
 		}
