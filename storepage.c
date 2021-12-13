@@ -6,6 +6,7 @@
 #define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
 #define NEWLINE printf("\n");
+#define NULL_STRING "Not provided"
 
 #define TD fprintf(outputFile, "<td>\n");
 #define TD_END fprintf(outputFile, "</td>\n");
@@ -115,7 +116,7 @@ int main()
 		printf("---- Main Menu ----\n\n");
 		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
 		{
-			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : mainMenuValues[i]->s));
+			printf("%d - %-24s - %c%s\n", i, mainMenuOptions[i], ((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : (mainMenuValues[i]->s == NULL ? (NULL_STRING) : mainMenuValues[i]->s)));
 		}
 		NEWLINE
 
@@ -222,7 +223,7 @@ int main()
 				}
 				NEWLINE
 
-					menuIndex = validateIndexInput(12);
+				menuIndex = validateIndexInput(USERCONTACTS_MENU_ITEM_AMOUNT - 1);
 
 				if (menuIndex == 0)
 				{
@@ -239,7 +240,6 @@ int main()
 		else
 		{
 			printf("Enter New %s: ", mainMenuOptions[menuIndex]);
-			free(mainMenuValues[menuIndex]->s);
 			mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 			mainMenuFields[menuIndex] = 2;
 			NEWLINE
@@ -486,14 +486,15 @@ int validateIndexInput(int maxIndex)
 {
 	int input;
 	printf("Enter index: ");
-	while (!scanf("%d", &input) || !((input >= 0) && (input <= maxIndex)))
+	while (!scanf("%d", &input) || !((input >= 0) && (input <= maxIndex)) || getc(stdin) != '\n')
 	{
+		printf("err: incorrect input\nEnter index: ");
 		char peekChar = getc(stdin);
 		while (peekChar != '\n')
 		{
 			peekChar = getc(stdin);
 		}
-		printf("err: incorrect input\nEnter index: ");
+		putc(peekChar, stdin);
 	}
 	NEWLINE
 
@@ -515,7 +516,6 @@ char* validateStringInput(int maxLength)
 {
 	char* input = (char*)malloc(maxLength);
 	printf("Input string (character limit: %d): ", maxLength);
-	getchar();
 	fgets(input, maxLength + 1, stdin);
 	if (getStringLength(input) < maxLength)
 	{
