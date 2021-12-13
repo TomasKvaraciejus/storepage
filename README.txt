@@ -1,3 +1,5 @@
+IRMALIST - Interactive Reasonable Marketplace Agency
+
 ---- General information ----
 This program generates an advertisement website which consists of data which was input by the user.
 
@@ -23,6 +25,6 @@ If you encounter any issues or bugs please report them to: matas.samsonas@mif.vu
 ---- Credits ----
 Domas Nemanius - Coordinator, designer and tester.
 Adomas Vensas - Designer and tester.
-Tomas Kvaraciejus - Architech, programmer and publisher. 
-Matas Šamšonas - Architech, programmer and publisher.
+Tomas Kvaraciejus - Architect, programmer and publisher. 
+Matas Šamšonas - Architect, programmer and publisher.
  
