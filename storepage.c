@@ -219,7 +219,7 @@ int main()
 				printf("---- User Contacts Menu ----\n");
 				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
 				{
-					printf("%d - %-24s %c %s\n", i, userContactsMenuOptions[i], (!i) ? (0) : ('-'), (!i) ? (" ") : (userContactsMenuValues[i]->s));
+					printf("%d - %-24s %c %s\n", i, userContactsMenuOptions[i], (!i) ? (0) : ('-'), (!i) ? (" ") : ((userContactsMenuValues[i]->s == NULL)) ? (NULL_STRING) : (userContactsMenuValues[i]->s));
 				}
 				NEWLINE
 
