@@ -23,7 +23,7 @@
 // 4 - Description
 // 5 - More Information (Link)
 // 6 - Details
-// 7 - Seller's Contacts (?)
+// 7 - Seller's Contacts* (?)
 // 8 - Compile Website Function
 //
 // * - mandatory (User will be prompted to enter details when attempting to compile website without sufficient data)
@@ -55,7 +55,7 @@
 //
 
 // ---- TODO: ----
-// 
+// Compile Website Function
 
 struct linkedList
 {
@@ -76,7 +76,7 @@ char* validateStringInput(int maxLength);
 
 int addLinkedListItem(linkedList* l, char* s);
 
-int removeLinkedListItem(linkedList* l, int index);
+int removeLinkedListItem(linkedList** l, int index);
 
 int insertLinkedListItem(linkedList* l, char* s, int index);
 
@@ -92,7 +92,7 @@ int main()
 {
 	int menuIndex;
 	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = { "Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit" };
-	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 0, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
+	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
 
 	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = { "Back", "Phone Number", "Email Address", "Custom Contact Link" };
 
@@ -123,27 +123,20 @@ int main()
 
 		if (menuIndex == 8)
 		{
-			for (int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
-			{
-				if (mainMenuFields[index] == 1)
-				{
-					printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
-					NEWLINE
-						break;
-				}
-				else if (index == MAIN_MENU_ITEM_AMOUNT - 1)
-				{
-					for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
-					{
-						if (mainMenuValues[i]->s == NULL)
-						{
-							mainMenuValues[i]->s = "Not provided";
-						}
-					}
-					compileWebsite(mainMenuValues, userContactsMenuValues);
-					++end;
-				}
-			}
+            		for(int index = 0; index < MAIN_MENU_ITEM_AMOUNT; ++index)
+            		{
+                		if(mainMenuFields[index] == 1)
+                		{
+                    			printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
+                    			NEWLINE
+                    			break;
+                		}
+                		else if(index == MAIN_MENU_ITEM_AMOUNT - 1)
+                		{
+                    			compileWebsite(mainMenuValues, userContactsMenuValues);
+                    			++end;
+                		}
+            		}
 		}
 		else if (menuIndex == 6)
 		{
@@ -209,7 +202,7 @@ int main()
 				}
 				case 4:
 				{
-					removeLinkedListItem(mainMenuValues[menuIndex], validateIndexInput(index));
+					removeLinkedListItem(&mainMenuValues[menuIndex], validateIndexInput(index));
 					index--;
 					break;
 				}
@@ -290,10 +283,10 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 			fprintf(outputFile, "<p>\n");
 		fprintf(outputFile, "<strong>Description:</strong>\n");
 		BR
-			fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
+		fprintf(outputFile, "%s\n", mainMenuValues[4]->s); // Description
 		fprintf(outputFile, "<a href=\"%s\">More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
 		BR
-			fprintf(outputFile, "</p>\n");
+		fprintf(outputFile, "</p>\n");
 		TD_END
 			TR_END
 			TR
@@ -302,7 +295,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<ul>\n");
 		do
 		{
-			fprintf(outputFile, "<li> %s\n", mainMenuValues[6]->s); // Product Details
+			fprintf(outputFile, "<li> %s </li>\n", mainMenuValues[6]->s); // Product Details
 			if (mainMenuValues[6]->nextListItem)
 			{
 				mainMenuValues[6] = mainMenuValues[6]->nextListItem;
@@ -314,6 +307,20 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "</tr>\n");
 		fprintf(outputFile, "</article>\n");
 		fprintf(outputFile, "</table>\n");
+		fprintf(outputFile, "<article>\n");
+        fprintf(outputFile,"<ul class=\"cont\">\n");
+        fprintf(outputFile,"<li><strong>Contact info:</strong></li>\n");
+        char * meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = {"Phone Number", "Email", "Other"};
+            for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+				{
+				    if(userContactsMenuValues[i]->s != NULL)
+                    {
+                        fprintf(outputFile, "<li>%s: %s</li>\n",meansOfContact[i-1], userContactsMenuValues[i]->s);
+                    }
+				}
+        fprintf(outputFile, "</ul>\n");
+        fprintf(outputFile, "<p></\n");
+        fprintf(outputFile, "</article>\n");
 
 		for (int i = 0; i < 5; ++i)
 		{
@@ -375,28 +382,39 @@ int addLinkedListItem(linkedList* l, char* s)
 	return addValue;
 }
 
-int removeLinkedListItem(linkedList* l, int index)
+int removeLinkedListItem(linkedList** l, int index)
 {
 	int removeValue = 0;
 
-	linkedList* prevListItem = l, * _l, * _originalListItem = l;
-
-	if (l->index >= index)
+	linkedList* prevListItem = (*l), * _l, * _originalListItem = (*l);
+    if(!index)
+    {
+        *l = (*l)->nextListItem;
+        prevListItem = *l;
+        free(_originalListItem);
+        while(prevListItem->nextListItem)
+        {
+            prevListItem->index--;
+            prevListItem = prevListItem->nextListItem;
+        }
+        return 0;
+    }
+	if ((*l)->index >= index)
 	{
 		++removeValue;
 	}
 	else
 	{
-		while (l->index != index && l != NULL)
+		while ((*l)->index != index && (*l) != NULL)
 		{
-			prevListItem = l;
-			l = l->nextListItem;
+			prevListItem = (*l);
+			(*l) = (*l)->nextListItem;
 		}
 
-		if (l->index == index)
+		if ((*l)->index == index)
 		{
-			prevListItem->nextListItem = l->nextListItem;
-			_l = l->nextListItem;
+			prevListItem->nextListItem = (*l)->nextListItem;
+			_l = (*l)->nextListItem;
 			while (_l != NULL)
 			{
 				--(_l->index);
@@ -405,14 +423,13 @@ int removeLinkedListItem(linkedList* l, int index)
 
 			if (index == 0)
 			{
-				_l = l->nextListItem;
-				free(l);
-				l = _l;
-				printf("buh\n");
+				_l = (*l)->nextListItem;
+				free((*l));
+				(*l) = _l;
 			}
 			else
 			{
-				free(l);
+				free((*l));
 			}
 		}
 		else
@@ -555,6 +572,5 @@ int addLinkedListItemToTop(linkedList** l, char* s)
 		}
 		newElement->index++;
 	}
-	free(newElement);
 	return 0;
 }
