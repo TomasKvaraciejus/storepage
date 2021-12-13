@@ -6,7 +6,6 @@
 #define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
 #define NEWLINE printf("\n");
-#define NULL_STRING "Not provided"
 
 #define TD fprintf(outputFile, "<td>\n");
 #define TD_END fprintf(outputFile, "</td>\n");
@@ -352,7 +351,7 @@ linkedList* initializeLinkedList()
 {
 	linkedList* l = malloc(sizeof(linkedList));
 	l->index = 0;
-	l->s = NULL_STRING;
+	l->s = NULL;
 	l->nextListItem = NULL;
 	l->maxStringLength = MAX_STRING_LENGTH;
 	return l;
