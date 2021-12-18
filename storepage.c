@@ -58,13 +58,14 @@
 // ---- TODO: ----
 //
 
-typedef struct linkedList
+struct linkedList
 {
 	int maxStringLength;
 	int index;
 	char* s;
 	struct linkedList* nextListItem;
-} linkedList;
+};
+typedef struct linkedList linkedList;
 
 int validateIndexInput();
 
@@ -249,7 +250,6 @@ int main()
 void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuValues)
 {
 	FILE* outputFile = fopen("website.html", "w");
-	
 	if (outputFile != NULL)
 	{
 		fprintf(outputFile, "<!DOCTYPE html>\n");
@@ -261,6 +261,12 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<body>\n");
 
 		fprintf(outputFile, "<h1> World's Best Store - <span class=\"demo rainbow\">IrmaList</span> </h1>\n");
+		fprintf(outputFile, 
+		"<nav>\n"
+        "<a href=\"aboutus.html\">About us</a>\n"
+        "<a href=\"contacts1.html\">Contacts</a>\n"
+      	"</nav>\n");
+
 		fprintf(outputFile, "<article>\n");
 		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s == NULL ? (NULL_STRING) : mainMenuValues[0]->s); // Item Name
 		fprintf(outputFile, "<table>\n");
