@@ -91,7 +91,7 @@ void compileAboutUs(FILE *aboutUs)
         "                    by offering the tools to professionally showcase one's offerings.\n"
         "                </td>\n"
         "                <td>\n"
-        "                    <img src = \"founders.jpg\"/>\n"
+        "                    <img src = \"Images/founders.jpg\"/>\n"
         "                    <p>\n"
         "                        Photo taken during the first meeting of the\n"
         "                        <span class=\"demo rainbow\">IrmaList</span>team.\n"

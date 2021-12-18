@@ -89,6 +89,10 @@ int addLinkedListItemToTop(linkedList** l, char* s);
 
 void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuValues);
 
+void compileAboutUs();
+
+void compileContacts();
+
 int main()
 {
 	int menuIndex;
@@ -250,8 +254,12 @@ int main()
 void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuValues)
 {
 	FILE* outputFile = fopen("website.html", "w");
+
 	if (outputFile != NULL)
 	{
+		compileAboutUs();
+		compileContacts();
+
 		fprintf(outputFile, "<!DOCTYPE html>\n");
 		fprintf(outputFile, "<html>\n");
 		fprintf(outputFile, "<head>\n");
@@ -261,18 +269,20 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		fprintf(outputFile, "<body>\n");
 
 		fprintf(outputFile, "<h1> World's Best Store - <span class=\"demo rainbow\">IrmaList</span> </h1>\n");
-		fprintf(outputFile, 
-		"<nav>\n"
-        "<a href=\"aboutus.html\">About us</a>\n"
-        "<a href=\"contacts1.html\">Contacts</a>\n"
-      	"</nav>\n");
+		fprintf
+		(outputFile, 
+				"<nav>\n"
+				"<a href=\"aboutus.html\">About us</a>\n"
+				"<a href=\"contacts.html\">Contacts</a>\n"
+				"</nav>\n"
+		);
 
 		fprintf(outputFile, "<article>\n");
 		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s == NULL ? (NULL_STRING) : mainMenuValues[0]->s); // Item Name
 		fprintf(outputFile, "<table>\n");
 		TR
 			fprintf(outputFile, "<td rowspan=\"4\">\n");
-		fprintf(outputFile, "<img src = \" %s \" width = \"250\"/>\n", mainMenuValues[1]->s == NULL ? (NULL_STRING) : mainMenuValues[1]->s); // Image Source
+		fprintf(outputFile, "<img src = \"Images/ %s \" width = \"250\"/>\n", mainMenuValues[1]->s == NULL ? (NULL_STRING) : mainMenuValues[1]->s); // Image Source
 		TD_END
 			TD
 			fprintf(outputFile, "<strong>Price:</strong> %s\n", mainMenuValues[2]->s == NULL ? (NULL_STRING) : mainMenuValues[2]->s);
@@ -338,7 +348,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		}
 
 		fprintf(outputFile, "<img class=\"stonks\"\n");
-		fprintf(outputFile, "src=\"stonks.png\"\n");
+		fprintf(outputFile, "src=\"Images/stonks.png\"\n");
 		fprintf(outputFile, "/>");
 		for (int i = 0; i < 5; ++i)
 		{
@@ -354,6 +364,200 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 	{
 		printf("err: unable to create or open file\n");
 	}
+}
+
+void compileAboutUs()
+{
+	FILE* aboutUs = fopen("aboutus.html", "w");
+
+	if(!aboutUs){
+        printf("Error 404. Could not compile About Us.");
+        return;
+    }
+
+    fprintf
+    (aboutUs,
+        "<!DOCTYPE html>\n"
+        "<html>\n"
+        "    <head>\n"
+        "    <link href=\"style.css\" rel=\"stylesheet\" />\n"
+        "    <title> About Us - IrmaList </title>\n"
+
+        "        <style>\n"
+                     /* Headers */
+        "            h1{\n"
+        "                margin-bottom:4px;\n"
+        "                text-align: center;\n"
+        "            }\n"
+        "            h3{\n"
+        "                text-align: center;\n"
+        "                margin-top: 0px;\n"
+        "                margin-bottom: 0px;\n"				
+        "            }\n"
+
+                    /*Table elements*/
+        "            table{\n"
+        "                font-size: 24px;\n"
+        "                width: 75%;\n"
+        "                margin-left:auto;\n"
+        "                margin-right:auto;\n"
+        "            }\n"
+        "            td{\n"
+        "                margin-right: 5%;\n"
+        "            }\n"
+        "            #defineIrmalist{\n"
+        "                text-align: center;\n"
+        "                font-size: 36px;\n"
+        "            }\n"
+        "            #tableText{\n"
+        "                text-align: center;\n"
+        "                vertical-align: top;\n"
+        "            }\n"
+                    
+                    /*Seperating line*/
+        "            hr{\n"
+        "                width:80%;\n" 
+        "                text-align: center;\n"
+        "            }\n"
+
+                    /*Image*/
+        "            img{\n"
+        "                width: 350px;\n"
+        "            }\n"
+
+        "        </style>\n"
+        "    </head>\n"
+
+        "    <body>\n"
+        "        <h1>\n"
+        "            World's Best Store - <span class=\"demo rainbow\">IrmaList</span>\n"
+        "        </h1>\n"
+
+        "        <hr>\n"
+        "        <h3>\n"
+        "            <a href = \"mainpage.html\">Main Page</a> |\n"
+        "            <a href = \"website.html\">Last Visited</a> |\n"
+        "            <a href = \"aboutus.html\">About Us</a> |\n"
+        "            <a href = \"contact.html\">Contact Us</a>\n"
+        "        </h3>\n"
+        "        <hr>\n"
+        "        <br>\n"
+
+        "        <table>\n"
+        "            <tr>\n"
+        "                <td id=\"defineIrmalist\" colspan = \"2\">\n"
+        "                    What is <span class=\"demo rainbow\">IrmaList</span>?\n"
+        "                    <br>\n"
+        "                    <br>\n"
+        "                </td>\n"
+        "            </tr>\n"
+        "            <tr>\n"
+        "                <td id=\"tableText\">\n"
+        "                    <span class=\"demo rainbow\">IrmaList</span>\n"
+        "                    (stands for: Interactive Reasonable Marketplace Agency)\n"
+        "                    is an advertisement website which puts extreme emphasis on user ability to customize their postings to our website.\n"
+        "                    This is due to the belief shared by our team that to present your offer properly is a vital skill,\n"
+        "                    especially nowadays when other platforms of similar purpose are flooded\n"
+        "                    with low quality ads that do not properly reflect the product being sold.\n"
+        "                    Our mission statement is to combat the stigma towards second hand purchases\n"
+        "                    by offering the tools to professionally showcase one's offerings.\n"
+        "                </td>\n"
+        "                <td>\n"
+        "                    <img src = \"Images/founders.jpg\"/>\n"
+        "                    <p>\n"
+        "                        Photo taken during the first meeting of the\n"
+        "                        <span class=\"demo rainbow\">IrmaList</span> team.\n"
+        "                    </p>\n"
+        "                </td>\n"
+        "            </tr>\n"
+        "        </table>\n"
+            
+        "        <br>\n"
+        "        <br>\n"
+        "        <p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n"
+        "    </body>\n"
+
+        "</html>\n"
+    );
+
+    return;
+}
+
+void compileContacts(){
+
+	FILE *contacts = fopen("contacts.html", "w");
+
+	if(!contacts){
+		printf("Error 404. Could not compile Contacts.");
+		return;
+	}
+
+    fprintf(contacts, 
+        "<!DOCTYPE html>\n"
+        "<html>\n"
+        "    <link href=\"style.css\" rel=\"stylesheet\" />\n"
+        "    <title>Contacts - IrmaList</title>\n"
+        "    <style>\n"
+        "      p {\n"
+        "        text-align: center;\n"
+        "      }\n"
+        "       td {\n"
+        "        font-size: 24px;\n"
+        "      }\n"
+        "      h1 {\n"
+        "        margin-bottom: 4px;\n"
+        "        text-align: center;\n"
+        "      }\n"
+        "      hr{\n"
+        "        width: 80%; \n"
+        "        text-align: center;\n"
+        "      }\n"
+        "    </style>\n"
+        "  </head>\n"
+        "    <body>\n"
+        "      <h1>\n"
+        "        World's Best Store - <span class=\"demo rainbow\">IrmaList</span>\n"
+        "      </h1>\n"
+        "      <hr/>\n"
+        "      <h3 style=\"text-align: center; margin-top: 0px; margin-bottom: 0px\">\n"
+        "        <a href=\"mainpage.html\">main page</a> |\n"
+        "        <a href=\"website.html\">last visited</a> |\n"
+        "        <a href=\"aboutus.html\">about us</a> |\n"
+        "        <a href=\"contact.html\"> contact us </a>\n"
+        "      </h3>\n"
+        "      <hr/>\n"
+        "      <br/>\n"
+        "      <h1>Contacts</h1>\n"
+        "      <p>\n"
+        "        Coordinator: <br />Domas Nemanius<br />Telephone number: +370********\n"
+        "        <br />Email address:\n"
+        "      </p>\n"
+        "      <p>\n"
+        "        Lead Designer: <br />Adomas Vensas<br />Telephone number: +370********\n"
+        "        <br />Email address:\n"
+        "      </p>\n"
+        "      <p>\n"
+        "        Chief Architect: <br />Tomas Kvaraciejus<br />Telephone number:\n"
+        "        +370******** <br />Email address:\n"
+        "      </p>\n"
+        "      <p>\n"
+        "        Lead Developer: <br />Matas Šamšonas<br />Telephone number: +370********\n"
+        "        <br />Email address:\n"
+        "      </p>\n"
+        "      <p>\n"
+        "        Company headquarters: <br />Didlaukio g. 47, Vilnius 08303<br />Telephone\n"
+        "        number: +370********\n"
+        "      </p>\n"
+        "    </body>\n"
+        "    <br />\n"
+        "    <br />\n"
+        "    <p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n"
+        "  </head>\n"
+        "</html>\n"
+        );
+
+    fclose(contacts);
+	return;
 }
 
 linkedList* initializeLinkedList()
