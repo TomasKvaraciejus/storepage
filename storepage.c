@@ -56,7 +56,12 @@
 //
 
 // ---- TODO: ----
-//
+//Sutvarkyt index.html taip, kad kai jis sukompiliuojamas, 'product details' būtų šone, o ne po nuotrauka.
+//suvienodint visuose puslapiuose navbar ir padaryt, kad veiktų link'ai į kitas vietas puslapio
+//Panaikint 'last visited' iš navbar
+//Sutvarkyt sintaksę, kad būtų kuo mažiau printf ir fprintf
+
+
 
 struct linkedList
 {
@@ -557,6 +562,16 @@ void compileContacts(){
         );
 
     fclose(contacts);
+	return;
+}
+
+void compileMainPage()
+{
+	
+
+
+
+
 	return;
 }
 
