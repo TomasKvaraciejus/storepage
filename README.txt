@@ -17,7 +17,9 @@ Note: Items marked with an asterisk are required in order to compile the website
 
 ---- Known Issues ----
 When prompted to input an index do not use any unnecessarry characters as the program will not recognize the input.
+
 The program only recognizes ascii characters therefore, when writing down prices do not use the currency symbol (except $).
+
 If images are added via the directory path, they must be included in the 'Images' folder to show up in the website.
 
 ---- Contacts ----
