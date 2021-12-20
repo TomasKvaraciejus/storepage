@@ -60,7 +60,7 @@
 //suvienodint visuose puslapiuose navbar ir padaryt, kad veiktų link'ai į kitas vietas puslapio
 //Panaikint 'last visited' iš navbar
 //Sutvarkyt sintaksę, kad būtų kuo mažiau printf ir fprintf
-
+//Būtų gerai, kad tik website.html atsirastų bendrame folderyje. Visos kitos .html svetainės atskirama folderyje (panašiai kaip Images).
 
 
 struct linkedList
