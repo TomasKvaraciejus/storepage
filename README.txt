@@ -1,9 +1,9 @@
 IRMALIST - Interactive Reasonable Marketplace Agency
 
 ---- General information ----
-This program generates an advertisement website which consists of data which was input by the user.
+This program generates an advertisement website connsisting of data given by the user.
 
----- What can be edited? ----
+---- What information can be listed? ----
 Item Name*
 Image Source
 Item Price*
@@ -20,11 +20,7 @@ When prompted to input an index do not use any unnecessarry characters as the pr
 The program only recognizes ascii characters therefore, when writing down prices do not use the currency symbol (except $).
 
 ---- Contacts ----
-If you encounter any issues or bugs please report them to: matas.samsonas@mif.vu.lt or tomas.kvaraciejus@mif.vu.lt
+If you encounter any issues please report them to the coordinator: domas.nemanius@mif.stud.vu.lt
 
----- Credits ----
-Domas Nemanius - Coordinator, designer and tester.
-Adomas Vensas - Designer and tester.
-Tomas Kvaraciejus - Architect, programmer and publisher. 
-Matas Šamšonas - Architect, programmer and publisher.
- 
+---- Developer Team ----
+Domas Nemanius, Adomas Vensas, Tomas Kvaraciejus, Matas Šamšonas
