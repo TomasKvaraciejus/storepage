@@ -6,14 +6,7 @@
 #define USERCONTACTS_MENU_ITEM_AMOUNT 4
 #define MAX_STRING_LENGTH 128
 #define MAX_STRING_DESCRIPTION_LENGTH 256
-#define NEWLINE printf("\n");
 #define NULL_STRING "Not provided."
-
-#define TD fprintf(outputFile, "<td>\n");
-#define TD_END fprintf(outputFile, "</td>\n");
-#define TR fprintf(outputFile, "<tr>\n");
-#define TR_END fprintf(outputFile, "</tr>\n");
-#define BR fprintf(outputFile, "<br>\n");
 
 // ---- Menu and User Input ----
 // User input will be read through options menu accessed by index "menuIndex"
@@ -56,21 +49,17 @@
 //
 
 // ---- TODO: ----
-//Sutvarkyt index.html taip, kad kai jis sukompiliuojamas, 'product details' būtų šone, o ne po nuotrauka.
 //suvienodint visuose puslapiuose navbar ir padaryt, kad veiktų link'ai į kitas vietas puslapio
-//Panaikint 'last visited' iš navbar
-//Sutvarkyt sintaksę, kad būtų kuo mažiau printf ir fprintf
 //Būtų gerai, kad tik website.html atsirastų bendrame folderyje. Visos kitos .html svetainės atskirama folderyje (panašiai kaip Images).
 
 
-struct linkedList
+typedef struct linkedList
 {
 	int maxStringLength;
 	int index;
 	char* s;
 	struct linkedList* nextListItem;
-};
-typedef struct linkedList linkedList;
+}linkedList;
 
 int validateIndexInput();
 
@@ -101,20 +90,31 @@ void compileContacts();
 int main()
 {
 	int menuIndex;
-	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = { "Item Name", "Image Source", "Item Price", "Shipping Cost", "Description", "More Information (Link)", "Details", "Seller's Contacts", "Compile Website and Exit" };
 	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = { 1, 0, 1, 0, 0, 0, 0, 1, 0 }; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
-
-	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = { "Back", "Phone Number", "Email Address", "Custom Contact Link" };
-
+	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = {"Item Name",
+													"Image Source",
+													"Item Price",
+													"Shipping Cost",
+													"Description",
+													"More Information (Link)",
+													"Details",
+													"Seller's Contacts",
+													"Compile Website and Exit",
+													};
+	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {"Back",
+																	"Phone Number",
+																	"Email Address",
+																	"Custom Contact Link",
+																	};
 	linkedList* mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
 	linkedList* userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
 
-	for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
+	for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; ++i)
 	{
 		mainMenuValues[i] = initializeLinkedList();
 	}
 
-	for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+	for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; ++i)
 	{
 		userContactsMenuValues[i] = initializeLinkedList();
 	}
@@ -123,11 +123,11 @@ int main()
 	while (!end)
 	{
 		printf("---- Main Menu ----\n\n");
-		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; i++)
+		for (int i = 0; i < MAIN_MENU_ITEM_AMOUNT; ++i)
 		{
 			printf("%d - %-24s %c %c%s\n", i, mainMenuOptions[i], (i == 8) ? 0 : '-' ,((mainMenuFields[i] == 1) ? '*' : ' '), (((i == 6 || i == 7)) ? "Expand Menu" : ((i == 8) ? (" ") : (mainMenuValues[i]->s == NULL) ? (NULL_STRING) : mainMenuValues[i]->s)));
 		}
-		NEWLINE
+		printf("\n");
 
 			menuIndex = validateIndexInput(MAIN_MENU_ITEM_AMOUNT - 1);
 
@@ -137,12 +137,12 @@ int main()
 			{
 				if (mainMenuFields[index] == 1)
 				{
-					printf("You have not filled in the %s. Thus, you are unable to compile the file.\n", mainMenuOptions[index]);
-					NEWLINE
+					printf("You have not filled in the %s. Thus, you are unable to compile the file.\n\n", mainMenuOptions[index]);
 						break;
 				}
 				else if (index == MAIN_MENU_ITEM_AMOUNT - 1)
 				{
+					printf("Thank You!\nThe website has been succesfully created in this program's folder.\n\n");
 					compileWebsite(mainMenuValues, userContactsMenuValues);
 					++end;
 				}
@@ -157,8 +157,7 @@ int main()
 			char* detailMenuOptions[5] = { "Return to Main Menu", "Add New List Item to Top", "Insert New List Item after Custom Index", "Modify List Item", "Remove List Item" };
 			while (a)
 			{
-				printf("---- Current details ---- \n");
-				NEWLINE
+				printf("---- Current details ---- \n\n");
 					if (mainMenuValues[menuIndex]->nextListItem == NULL)
 					{
 						printf("No current details.\n");
@@ -167,9 +166,7 @@ int main()
 					{
 						index = printLinkedList(mainMenuValues[menuIndex]);
 					}
-				NEWLINE
-					printf("---- End of details ---- \n");
-				NEWLINE
+					printf("\n---- End of details ---- \n\n");
 					linkedList* first = mainMenuValues[menuIndex];
 				printf("---- Options menu ---- \n");
 				if (!index)
@@ -226,11 +223,11 @@ int main()
 			while (!endMenu)
 			{
 				printf("---- User Contacts Menu ----\n");
-				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+				for (int i = 0; i < USERCONTACTS_MENU_ITEM_AMOUNT; ++i)
 				{
 					printf("%d - %-24s %c %s\n", i, userContactsMenuOptions[i], (!i) ? (0) : ('-'), (!i) ? (" ") : ((userContactsMenuValues[i]->s == NULL)) ? (NULL_STRING) : (userContactsMenuValues[i]->s));
 				}
-				NEWLINE
+				printf("\n");
 
 				menuIndex = validateIndexInput(USERCONTACTS_MENU_ITEM_AMOUNT - 1);
 
@@ -242,7 +239,7 @@ int main()
 				{
 					userContactsMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 					mainMenuFields[7] = 2;
-					NEWLINE
+					printf("\n");
 				}
 			}
 		}
@@ -251,7 +248,7 @@ int main()
 			printf("Enter New %s: ", mainMenuOptions[menuIndex]);
 			mainMenuValues[menuIndex]->s = validateStringInput(MAX_STRING_LENGTH);
 			mainMenuFields[menuIndex] = 2;
-			NEWLINE
+			printf("\n");
 		}
 	}
 }
@@ -265,110 +262,133 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		compileAboutUs();
 		compileContacts();
 
-		fprintf(outputFile, "<!DOCTYPE html>\n");
-		fprintf(outputFile, "<html>\n");
-		fprintf(outputFile, "<head>\n");
-		fprintf(outputFile, "<link href=\"style.css\" rel=\"stylesheet\" />\n");
-		fprintf(outputFile, "<title>IrmaList</title>\n");
-		fprintf(outputFile, "</head>\n");
-		fprintf(outputFile, "<body>\n");
-
-		fprintf(outputFile, "<h1> World's Best Store - <span class=\"demo rainbow\">IrmaList</span> </h1>\n");
 		fprintf
-		(outputFile, 
-				"<nav>\n"
-				"<a href=\"aboutus.html\">About us</a>\n"
-				"<a href=\"contacts.html\">Contacts</a>\n"
-				"</nav>\n"
+		(outputFile,
+		"<!DOCTYPE html>\n"
+		"<html>\n"
+		"	<head>\n"
+		"	<link href=\"style.css\" rel=\"stylesheet\" />\n"
+		"	<title>Product</title>\n"
+		"	</head>\n"
+		"	<body>\n"
+		"		<h1>\n"
+		"			World's Best Store - <span class=\"demo rainbow\">IrmaList</span>\n"
+		"		</h1>\n" 
+		"		<hr>\n"
+        "		<h3>\n"
+        "    		<a href = \"mainpage.html\">Main Page</a> |\n"
+        "    		<a href = \"aboutus.html\">About Us</a> |\n"
+        "    		<a href = \"contactus.html\">Contact Us</a>\n"
+        "		</h3>\n"
+        "		<hr>\n"
+		"			<article>\n"
+		"			<h2>%s</h2>\n"
+		"			<table>\n"
+		"				<tr>\n"
+		"					<td rowspan=\"4\">\n"
+		"						<img src = \"Images/ %s \" width = \"250\"/>\n"
+		"					</td>\n"
+		"					<td>\n"
+		"						<strong>Price: </strong>%s\n"
+		"					</td>\n"
+		"				</tr>\n"
+		"				<tr>\n"
+		"					<td>\n"
+		"						<strong>Shiping cost: </strong>%s\n"
+		"					</td>\n"
+		"				</tr>\n"
+		"				<tr>\n"
+		"					<td>\n"
+		"						<p>\n"
+		"							<strong>Description:</strong>\n"
+		"							<br>\n"
+		"							%s\n"
+		"							<a href=\"%s\">%s\n"
+		"						</p>\n"
+		"					</td>\n"
+		"				</tr>\n",
+			mainMenuValues[0]->s == NULL ? (NULL_STRING) : mainMenuValues[0]->s, 	// Item Name
+			mainMenuValues[1]->s == NULL ? (NULL_STRING) : mainMenuValues[1]->s, 	// Image source
+			mainMenuValues[2]->s == NULL ? (NULL_STRING) : mainMenuValues[2]->s, 	// Item Price
+			mainMenuValues[3]->s == NULL ? (NULL_STRING) : mainMenuValues[3]->s, 	// Shipping Cost
+			mainMenuValues[4]->s == NULL ? (NULL_STRING) : mainMenuValues[4]->s, 	// Description
+			mainMenuValues[5]->s == NULL ? "" : mainMenuValues[5]->s,			 	// More information (Link)
+			mainMenuValues[5]->s == NULL ? "</a>" : "More information &rarr;</a>\n"	//More information (Ending)
 		);
 
-		fprintf(outputFile, "<article>\n");
-		fprintf(outputFile, "<h2>%s</h2>\n", mainMenuValues[0]->s == NULL ? (NULL_STRING) : mainMenuValues[0]->s); // Item Name
-		fprintf(outputFile, "<table>\n");
-		TR
-			fprintf(outputFile, "<td rowspan=\"4\">\n");
-		fprintf(outputFile, "<img src = \"Images/ %s \" width = \"250\"/>\n", mainMenuValues[1]->s == NULL ? (NULL_STRING) : mainMenuValues[1]->s); // Image Source
-		TD_END
-			TD
-			fprintf(outputFile, "<strong>Price:</strong> %s\n", mainMenuValues[2]->s == NULL ? (NULL_STRING) : mainMenuValues[2]->s);
-		TD_END
-			TR_END
-			TR
-			TD
-			fprintf(outputFile, "<strong>Shiping cost:</strong> %s\n", mainMenuValues[3]->s == NULL ? (NULL_STRING) : mainMenuValues[3]->s); // Shipping Cost
-		TD_END
-			TR_END
-			TD
-			TR_END
-			TR
-			TD
-			fprintf(outputFile, "<p>\n");
-		fprintf(outputFile, "<strong>Description:</strong>\n");
-		BR
-			fprintf(outputFile, "%s\n", mainMenuValues[4]->s  == NULL ? (NULL_STRING) : mainMenuValues[4]->s); // Description
-		if(mainMenuValues[5]->s != NULL)
-        {
-            fprintf(outputFile, "<a href=\"%s\"> More information &rarr;</a>\n", mainMenuValues[5]->s); // More Information (Link)
-        }
-		BR
-			fprintf(outputFile, "</p>\n");
-		TD_END
-			TR_END
-			TR
-			TD
-			fprintf(outputFile, "<strong>Product details:</strong>\n");
-		fprintf(outputFile, "<ul>\n");
-		do
-		{
-			fprintf(outputFile, "<li> %s </li>\n", mainMenuValues[6]->s == NULL ? (NULL_STRING) : mainMenuValues[6]->s); // Product Details
-			if (mainMenuValues[6]->nextListItem)
-			{
-				mainMenuValues[6] = mainMenuValues[6]->nextListItem;
-			}
-		} while (mainMenuValues[6]->nextListItem);
-		fprintf(outputFile, "</ul>\n");
-		fprintf(outputFile, "<button>Add to cart</button>\n");
-		fprintf(outputFile, "</td>\n");
-		fprintf(outputFile, "</tr>\n");
-		fprintf(outputFile, "</article>\n");
-		fprintf(outputFile, "</table>\n");
-		fprintf(outputFile, "<article>\n");
-		fprintf(outputFile, "<strong>Contact info:</strong>\n");
-		fprintf(outputFile, "<ul class=\"cont\">\n");
-		char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = { "Phone Number", "Email", "Other" };
-		for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; i++)
+		fprintf
+		(outputFile,
+		"				<tr>\n"
+		"					<td>\n"
+		"						<strong>Product details:</strong>\n"
+		"						<br>\n"
+		"						%s\n"
+		"						<ul>\n",
+			mainMenuValues[6]->s == NULL ? (NULL_STRING) : ""
+		);
+		while(mainMenuValues[6]->nextListItem){
+			fprintf
+			(outputFile, 
+				"							<li>%s</li>\n",
+				mainMenuValues[6]->s 	// Product Details
+			); 
+			mainMenuValues[6] = mainMenuValues[6]->nextListItem;
+		}
+
+		fprintf
+		(outputFile,
+		"						</ul>\n"
+		"						<button>Add to cart</button>\n"
+		"					</td>\n"
+		"				</tr>\n"
+		"			</table>\n"
+		"		</article>\n"
+		"		<article>\n"
+		"			<strong>Contact info:</strong>\n"
+		"			<ul class=\"cont\">\n"
+		);
+		char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = {"Phone Number",
+																   "Email",
+																   "Other",
+																   };
+		for (int i = 1; i < USERCONTACTS_MENU_ITEM_AMOUNT; ++i)
 		{
 			if (userContactsMenuValues[i]->s != NULL)
 			{
-				fprintf(outputFile, "<li>%s: %s</li>\n", meansOfContact[i - 1], userContactsMenuValues[i]->s);
+				fprintf
+				(outputFile, 
+					"				<li>%s: %s</li>\n",
+					meansOfContact[i - 1], userContactsMenuValues[i]->s
+				);
 			}
 		}
-		fprintf(outputFile, "</ul>\n");
-		fprintf(outputFile, "<p></\n");
-		fprintf(outputFile, "</article>\n");
 
-		for (int i = 0; i < 5; ++i)
-		{
-			BR
-		}
+		fprintf
+		(outputFile,
+		"			</ul>\n"
+		"		</article>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<img class=\"stonks\" src=\"Images/stonks.png\"/>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n"
+		"	</body>\n"
+		"</html>\n"
+		);
 
-		fprintf(outputFile, "<img class=\"stonks\"\n");
-		fprintf(outputFile, "src=\"Images/stonks.png\"\n");
-		fprintf(outputFile, "/>");
-		for (int i = 0; i < 5; ++i)
-		{
-			BR
-		}
-
-
-		fprintf(outputFile, "<p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n");
-		fprintf(outputFile, "</body>\n");
-		fprintf(outputFile, "</html>\n");
 	}
 	else
 	{
 		printf("err: unable to create or open file\n");
 	}
+
+	return;
 }
 
 void compileAboutUs()
@@ -389,17 +409,6 @@ void compileAboutUs()
         "    <title> About Us - IrmaList </title>\n"
 
         "        <style>\n"
-                     /* Headers */
-        "            h1{\n"
-        "                margin-bottom:4px;\n"
-        "                text-align: center;\n"
-        "            }\n"
-        "            h3{\n"
-        "                text-align: center;\n"
-        "                margin-top: 0px;\n"
-        "                margin-bottom: 0px;\n"				
-        "            }\n"
-
                     /*Table elements*/
         "            table{\n"
         "                font-size: 24px;\n"
@@ -418,12 +427,6 @@ void compileAboutUs()
         "                text-align: center;\n"
         "                vertical-align: top;\n"
         "            }\n"
-                    
-                    /*Seperating line*/
-        "            hr{\n"
-        "                width:80%;\n" 
-        "                text-align: center;\n"
-        "            }\n"
 
                     /*Image*/
         "            img{\n"
@@ -441,9 +444,8 @@ void compileAboutUs()
         "        <hr>\n"
         "        <h3>\n"
         "            <a href = \"mainpage.html\">Main Page</a> |\n"
-        "            <a href = \"website.html\">Last Visited</a> |\n"
         "            <a href = \"aboutus.html\">About Us</a> |\n"
-        "            <a href = \"contact.html\">Contact Us</a>\n"
+        "            <a href = \"contactus.html\">Contact Us</a>\n"
         "        </h3>\n"
         "        <hr>\n"
         "        <br>\n"
@@ -490,7 +492,7 @@ void compileAboutUs()
 
 void compileContacts(){
 
-	FILE *contacts = fopen("contacts.html", "w");
+	FILE *contacts = fopen("contactus.html", "w");
 
 	if(!contacts){
 		printf("Error 404. Could not compile Contacts.");
@@ -509,14 +511,6 @@ void compileContacts(){
         "       td {\n"
         "        font-size: 24px;\n"
         "      }\n"
-        "      h1 {\n"
-        "        margin-bottom: 4px;\n"
-        "        text-align: center;\n"
-        "      }\n"
-        "      hr{\n"
-        "        width: 80%; \n"
-        "        text-align: center;\n"
-        "      }\n"
         "    </style>\n"
         "  </head>\n"
         "    <body>\n"
@@ -525,10 +519,9 @@ void compileContacts(){
         "      </h1>\n"
         "      <hr/>\n"
         "      <h3 style=\"text-align: center; margin-top: 0px; margin-bottom: 0px\">\n"
-        "        <a href=\"mainpage.html\">main page</a> |\n"
-        "        <a href=\"website.html\">last visited</a> |\n"
-        "        <a href=\"aboutus.html\">about us</a> |\n"
-        "        <a href=\"contact.html\"> contact us </a>\n"
+        "        <a href=\"mainpage.html\">Main Page</a> |\n"
+        "        <a href=\"aboutus.html\">About Us</a> |\n"
+        "        <a href=\"contactus.html\">Contact Us</a>\n"
         "      </h3>\n"
         "      <hr/>\n"
         "      <br/>\n"
@@ -562,16 +555,6 @@ void compileContacts(){
         );
 
     fclose(contacts);
-	return;
-}
-
-void compileMainPage()
-{
-	
-
-
-
-
 	return;
 }
 
@@ -726,7 +709,7 @@ int validateIndexInput(int maxIndex)
 		}
 		putc(peekChar, stdin);
 	}
-	NEWLINE
+	printf("\n");
 
 		return input;
 }
