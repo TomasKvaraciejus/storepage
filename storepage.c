@@ -46,12 +46,6 @@
 // ---- Website Compilation ----
 // Website will be compiled with highest index (8)
 // On successful compilation program will exit
-//
-
-// ---- TODO: ----
-//suvienodint visuose puslapiuose navbar ir padaryt, kad veiktų link'ai į kitas vietas puslapio
-//Būtų gerai, kad tik website.html atsirastų bendrame folderyje. Visos kitos .html svetainės atskirama folderyje (panašiai kaip Images).
-
 
 typedef struct linkedList
 {
@@ -87,7 +81,7 @@ void compileAboutUs();
 
 void compileContacts();
 
-void createMainPage();
+void compileMainPage(linkedList** mainMenuValues);
 
 int main()
 {
@@ -282,15 +276,15 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 
 	compileAboutUs();
 	compileContacts();
-	createMainPage();
+	compileMainPage(mainMenuValues);
 
 	fprintf
 	(outputFile,
 		"<!DOCTYPE html>\n"
 		"<html>\n"
 		"	<head>\n"
-		"	<link href=\"style.css\" rel=\"stylesheet\" />\n"
-		"	<title>Product</title>\n"
+		"	<link href=\"../style.css\" rel=\"stylesheet\" />\n"
+		"	<title>Product - IrmaList</title>\n"
 		"	</head>\n"
 		"	<body>\n"
 		"		<h1>\n"
@@ -298,9 +292,9 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		"		</h1>\n" 
 		"		<hr>\n"
 		"		<h3>\n"
-		"    		<a href = \"mainpage.html\">Main Page</a> |\n"
-		"    		<a href = \"aboutus.html\">About Us</a> |\n"
-		"    		<a href = \"contactus.html\">Contact Us</a>\n"
+		"    		<a href = \"Pages/mainpage.html\">Main Page</a> |\n"
+		"    		<a href = \"Pages/aboutus.html\">About Us</a> |\n"
+		"    		<a href = \"Pages/contactus.html\">Contact Us</a>\n"
 		"		</h3>\n"
 		"		<hr>\n"
 		"			<article>\n"
@@ -409,7 +403,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 
 void compileAboutUs()
 {
-	FILE *aboutUs = fopen("aboutus.html", "w");
+	FILE *aboutUs = fopen("Pages/aboutus.html", "w");
 
 	if(!aboutUs){
         printf("Error 404. Could not compile About Us.");
@@ -421,7 +415,7 @@ void compileAboutUs()
         "<!DOCTYPE html>\n"
         "<html>\n"
         "    <head>\n"
-        "    <link href=\"style.css\" rel=\"stylesheet\" />\n"
+        "    <link href=\"../style.css\" rel=\"stylesheet\" />\n"
         "    <title> About Us - IrmaList </title>\n"
 
         "        <style>\n"
@@ -508,17 +502,18 @@ void compileAboutUs()
 
 void compileContacts(){
 
-	FILE *contacts = fopen("contactus.html", "w");
+	FILE *contacts = fopen("Pages/contactus.html", "w");
 
 	if(!contacts){
 		printf("Error 404. Could not compile Contacts.");
 		return;
 	}
 
-    fprintf(contacts, 
+    fprintf
+	(contacts, 
         "<!DOCTYPE html>\n"
         "<html>\n"
-        "    <link href=\"style.css\" rel=\"stylesheet\" />\n"
+        "    <link href=\"../style.css\" rel=\"stylesheet\" />\n"
         "    <title>Contacts - IrmaList</title>\n"
         "    <style>\n"
         "      p {\n"
@@ -571,6 +566,107 @@ void compileContacts(){
         );
 
     fclose(contacts);
+	return;
+}
+
+void compileMainPage(linkedList** mainMenuValues){
+    
+	FILE *mainpage = NULL;
+    mainpage = fopen("Pages/mainpage.html", "w");
+
+	if(!mainpage){
+		printf("Error 404. Could not compile Main Page.");
+		return;
+	}
+
+    fprintf
+	(mainpage,
+        "<!DOCTYPE html>\n"
+        "<html>\n"
+        "	<head>\n"
+        "		<link href=\"../style.css\" rel=\"stylesheet\" />\n"
+        "		<title>Main Page - IrmaList</title>\n"
+		"		<style>\n"
+		"			table{\n"
+		"				table-layout: fixed;\n"
+		"			}\n"
+		"			td{\n"
+		"				padding-left: 12px;\n"
+		"				padding-right: 12px;\n"
+		"				border: 1px solid black;\n"
+		"				width: 100px;\n"
+		"			}\n"
+		"			.walls{\n"
+		"				border: none;\n"
+		"			}\n"
+		"			.sections{\n"
+		"				margin-bottom: 12px;\n"
+		"				margin-left: 24px\n"
+		"			}\n"
+		"			img{\n"
+		"				object-fit: scale-down;\n"
+		"				width: 250px;\n"
+		"				height: 150px;\n"
+		"			}\n"
+		"		</style>\n"
+        "	</head>\n"
+        "	<body>\n"
+        "		<h1>\n"
+        "    		World's Best Store - <span class=\"demo rainbow\">IrmaList</span>\n"
+        "     	</h1>\n"
+        "       <hr>\n"
+        "       <h3>\n"
+        "            <a href = \"mainpage.html\">Main Page</a> |\n"
+        "            <a href = \"aboutus.html\">About Us</a> |\n"
+        "            <a href = \"contactus.html\">Contact Us</a>\n"
+        "       </h3>\n"
+        "       <hr>\n"
+        "       <br>\n"
+
+        "		<h3 class=\"sections\"> Most viewed posts: </h3>\n"
+        "		<table>\n"
+        "			<tr>\n"
+        "				<td> <a href = \" \"> <img src = \"../Images/powder.jpg\"> </a> </td>\n"
+        "				<td> <a href = \" \"> <img src = \"../Images/stonks.png\"> </a> </td>\n"
+        "				<td> <a href = \" \"> <img src = \"../Images/toplawyer.jpg\"> </a> </td>\n"
+        "			</tr>\n"
+        "			<tr>\n"
+        "				<td class=\"walls\"> <a href = \" \"> Coconut Flour </a> </td>\n"
+        "				<td class=\"walls\"> <a href = \" \"> Market Research Paper </a> </td>\n"
+        "				<td class=\"walls\"> <a href = \" \"> Browse more... </a> </td>\n"
+        "			</tr>\n"
+        "		</table> \n"
+
+        "		<col style = \"width: 12px\"/>\n"
+        "		<h3 class=\"sections\"> Most recent posts: </h3>\n"
+
+        "		<table>\n"
+        "			<tr>\n"
+        "				<td> <a href = \"../website.html\"> <img src = \"%s\"> </a> </td>\n"
+        "				<td> <a href = \" \"> <img src = \"../Images/toplawyer.jpg\"> </a> </td>\n"
+        "				<td> <a href = \" \"> <img src = \"../Images/powder.jpg\"> </a> </td>\n"
+        "			</tr>\n"
+        "			<tr>\n"
+        "				<td class=\"walls\"> <a href = \"../website.html\"> %.30s%s </a> </td>\n"
+        "				<td class=\"walls\"> <a href = \" \"> Criminal Attorney Services </a> </td>\n"
+        "				<td class=\"walls\"> <a href = \" \"> Browse more... </a> </td>\n"
+        "			</tr>\n"
+        "		</table> \n"
+
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+		"		<br>\n"
+        "		<p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n"
+        "	</body>\n"
+        "</html>\n",
+			mainMenuValues[1]->s == NULL ?        "#"      : mainMenuValues[1]->s, // Image source
+			mainMenuValues[0]->s == NULL ? "Mystery Item" : mainMenuValues[0]->s, // Item name
+			strlen(mainMenuValues[0]->s) > 30 ? "..." : ""						  // Elipsis if >30 symbols	
+	);
+
+    fclose(mainpage);
 	return;
 }
 
@@ -806,58 +902,5 @@ int addLinkedListItemToTop(linkedList** l, char* s) //Adds a new element to the 
 		newElement->index++;
 	}
 	return 0;
-}
-
-void createMainPage(){
-    FILE *mainpage = NULL;
-
-    mainpage = fopen("mainpage.html", "w");
-
-
-    fprintf(mainpage,
-        "<!DOCTYPE html>\n"
-        "<html>\n"
-        "<head>\n"
-        "<link href=\"style.css\" rel=\"stylesheet\" />\n"
-        "<title>IrmaList</title>\n"
-        "</head>\n"
-        "<body>\n"
-        "<h1 style = \"margin-bottom:4px\"> World's Best Store - <span class=\"demo rainbow\">IrmaList</span> </h1>\n"
-        "<hr style = \"width:80%; text-align: center\">\n"
-        "<h3 style = \"text-align: center; margin-top: 0px; margin-bottom: 0px\"> <a href = \"#\">main page</a> | <a href = \"aboutus.html\">about us</a> | <a href = \"contacts.html\"> contact us </a></h3>\n"
-        "<hr style = \"width: 80%; text-align: center\">\n"
-        "<h3 style = \"margin-bottom:12px;margin-left: 24px\"> Most viewed posts: </h3>\n"
-        "<table>\n"
-        "<tr>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href = \" \"> <img src = \"Images/powder.jpg\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href = \" \"> <img src = \"Images/stonks.png\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href =\" \"> <img src = \"Images/toplawyer.jpg\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "</tr>\n"
-        "<tr>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> null </a> </td>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> null </a> </td>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> browse more... </a> </td>\n"
-        "</tr>\n"
-        "</table> \n"
-        "<col style = \"width: 12px\"/>\n"
-        "<h3 style = \"margin-top:48px;margin-bottom:12px;margin-left: 24px;\"> Most recent posts: </h3>\n"
-        "<table style = \"table-layout:fixed\">\n"
-        "<tr>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href = \" \"> <img src = \"Images/stonks.png\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href = \" \"> <img src = \"Images/toplawyer.jpg\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "<td style = \"padding-left:12px; padding-right:12px; border:1px solid black; width:100px\"> <a href = \" \"> <img src = \"Images/powder.jpg\" style = \"object-fit:scale-down\" width = \"250\" height = \"150\"> </a> </td>\n"
-        "</tr>\n"
-        "<tr>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> null </a> </td>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> null </a> </td>\n"
-        "<td style = \"padding-left:12px\"> <a href = \" \"> browse more... </a> </td>\n"
-        "</tr>\n"
-        "</table> \n"
-        "<p id=\"copyright\">&copy; 2021 Adomas, Tomas, Matas, Domas</p>\n"
-        "</body>\n"
-        "</html>\n"
-    );
-
-    fclose(mainpage);
 }
 
