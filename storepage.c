@@ -283,7 +283,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		"<!DOCTYPE html>\n"
 		"<html>\n"
 		"	<head>\n"
-		"	<link href=\"../style.css\" rel=\"stylesheet\" />\n"
+		"	<link href=\"style.css\" rel=\"stylesheet\" />\n"
 		"	<title>Product - IrmaList</title>\n"
 		"	</head>\n"
 		"	<body>\n"
