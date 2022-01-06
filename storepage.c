@@ -87,21 +87,23 @@ int main()
 {
 	int menuIndex;
 	char mainMenuFields[MAIN_MENU_ITEM_AMOUNT] = {1, 0, 1, 0, 0, 0, 0, 1, 0,}; // 0 - Empty, non-mandatory; 1 - Empty, mandatory; 2 - Non-empty
-	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = {"Item Name",
-													"Image Source",
-													"Item Price",
-													"Shipping Cost",
-													"Description",
-													"More Information (Link)",
-													"Details",
-													"Seller's Contacts",
-													"Compile Website and Exit",
-												   };
-	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {"Back",
-																	"Phone Number",
-																	"Email Address",
-																	"Custom Contact Link",
-																   };
+	char* mainMenuOptions[MAIN_MENU_ITEM_AMOUNT] = {
+		"Item Name",
+		"Image Source",
+		"Item Price",
+		"Shipping Cost",
+		"Description",
+		"More Information (Link)",
+		"Details",
+		"Seller's Contacts",
+		"Compile Website and Exit",
+	};
+	char* userContactsMenuOptions[USERCONTACTS_MENU_ITEM_AMOUNT] = {
+		"Back",
+		"Phone Number",
+		"Email Address",
+		"Custom Contact Link",
+	};
 	linkedList* mainMenuValues[MAIN_MENU_ITEM_AMOUNT];
 	linkedList* userContactsMenuValues[USERCONTACTS_MENU_ITEM_AMOUNT];
 
@@ -156,12 +158,13 @@ int main()
 			int availableOptions = 5;
 			int index = 0;
 			int userInput;
-			char* detailMenuOptions[5] = {"Return to Main Menu",
-										  "Add New List Item to Top",
-										  "Insert New List Item after Custom Index",
-										  "Modify List Item",
-										  "Remove List Item",
-										 };
+			char* detailMenuOptions[5] = {
+				"Return to Main Menu",
+				"Add New List Item to Top",
+				"Insert New List Item after Custom Index",
+				"Modify List Item",
+				"Remove List Item",
+			};
 			while (a)
 			{
 				printf("---- Current details ---- \n\n");
@@ -351,10 +354,12 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		mainMenuValues[6] = mainMenuValues[6]->nextListItem;
 	}
 
-	char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = {"Phone Number",
-																"Email",
-																"Other",
-															  };
+	char* meansOfContact[USERCONTACTS_MENU_ITEM_AMOUNT - 1] = {
+		"Phone Number",
+		"Email",
+		"Other",
+	};
+
 	fprintf
 	(outputFile,
 		"						</ul>\n"
