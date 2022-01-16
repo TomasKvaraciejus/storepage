@@ -20,8 +20,6 @@ When prompted to input an index do not use any unnecessarry characters as the pr
 
 The program only recognizes ascii characters therefore, when writing down prices do not use the currency symbol (except $).
 
-If images are added via the directory path, they must be included in the 'Images' folder to show up in the website.
-
 ---- Contacts ----
 If you encounter any issues please report them to the coordinator: domas.nemanius@mif.stud.vu.lt
 
