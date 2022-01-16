@@ -305,7 +305,7 @@ void compileWebsite(linkedList** mainMenuValues, linkedList** userContactsMenuVa
 		"			<table>\n"
 		"				<tr>\n"
 		"					<td rowspan=\"4\">\n"
-		"						<img src = \"Images/ %s \" width = \"250px\"/>\n"
+		"						<img src = \"%s \" width = \"250px\"/>\n"
 		"					</td>\n"
 		"					<td>\n"
 		"						<strong>Price: </strong>%s\n"
